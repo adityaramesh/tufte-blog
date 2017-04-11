@@ -61,6 +61,9 @@ Tufte CSS uses `h1` for the document title, `p` with class `subtitle` for the do
 supported. If you feel the urge to reach for a heading of level 4 or greater, consider redesigning
 your document:
 
+<!-- Blockquotes with citations are handled by special postprocessing code that looks for
+<blockquote> tags followed by <cite> tags. -->
+
 > [It is] notable that the Feynman lectures (3 volumes) write about all of physics in 1800 pages,
 using only 2 levels of hierarchical headings: chapters and A-level heads in the text. It also uses
 the methodology of *sentences* which then cumulate sequentially into *paragraphs*, rather than the
@@ -73,25 +76,64 @@ CSS they are just lightly styled, semantically correct HTML using `blockquote` a
 elements. See page 20 of [The Visual Display of Quantitative Information][vqdi] for an example in
 print.
 
-[In his later books<label for="sn-in-his-later-books" class="margin-toggle
-sidenote-number"></label></span><input type="checkbox" id="sn-in-his-later-books"
-class="margin-toggle"/><span class="sidenote">[*Beautiful
-Evidence*][beautiful_evidence]]{.newthought}, Tufte starts each section with a bit of vertical
+<!-- Pandoc footnotes are converted to tufte-css sidenotes by postprocessing. -->
+
+[In his later books]{.newthought}[^later_books], Tufte starts each section with a bit of vertical
 space, a non-indented paragraph, and the first few words of the sentence set in small caps. For this
 we use a span with the class `newthought`, as demonstrated at the beginning of this paragraph.
 Vertical spacing is accomplished separately through `<section>` tags. Be consistent: though we do so
 in this paragraph for the purpose of demonstration, do not alternate use of header elements and the
 `newthought` technique. Pick one approach and stick to it.
 
-[In his later books.^[[*Beautiful Evidence*][beautiful_evidence]]]{.newthought}, Tufte starts each
-section with a bit of vertical space, a non-indented paragraph, and the first few words of the
-sentence set in small caps. For this we use a span with the class `newthought`, as demonstrated at
-the beginning of this paragraph.  Vertical spacing is accomplished separately through `<section>`
-tags. Be consistent: though we do so in this paragraph for the purpose of demonstration, do not
-alternate use of header elements and the `newthought` technique. Pick one approach and stick to it.
+[^later_books]: [*Beautiful Evidence*][beautiful_evidence]
 
 [tufte_forum_post]: http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000hB
 [vqdi]: http://www.edwardtufte.com/tufte/books_vdqi
 [beautiful_evidence]: http://www.edwardtufte.com/tufte/books_be
+
+### Text
+
+Although paper handouts obviously have a pure white background, the web is better served by the use
+of slightly off-white and off-black colors. Tufte CSS uses `#fffff8` and `#111111` because they are
+nearly indistinguishable from their ‘pure’ cousins, but dial down the harsh contrast. We stick to
+the greyscale for text, reserving color for specific, careful use in figures and images.
+
+In print, Tufte has used the proprietary Monotype Bembo[^bembo] font. A similar effect is achieved
+in digital formats with the now open-source [ETBook][et_book], which Tufte CSS supplies with a
+`@font-face` reference to a .ttf file. In case ETBook somehow doesn’t work, Tufte CSS shifts
+gracefully to other serif fonts like Palatino and Georgia.
+
+Also notice how Tufte CSS includes separate font files for bold (strong) and italic (emphasis),
+instead of relying on the browser to mechanically transform the text. This is typographic best
+practice.
+
+<!-- Note: simply wrapping the text below in a <span> tag will change the spacing. -->
+
+<p class='sans'>
+If you prefer sans-serifs, use the `sans` class. It relies on Gill Sans, Tufte’s sans-serif font of
+choice.
+</p>
+
+<!-- The empty span with the 'no-number' class removes the numbering from the previous sidenote. -->
+
+Links in Tufte CSS match the body text in color and do not change on mouseover or when clicked. Here
+is a [dummy example](#) that goes nowhere. These links are underlined, since this is the most widely
+recognized indicator of clickable text.[^blue_text][]{.no-number} However, because most browsers’
+default underlining does not clear descenders and is so thick and distracting, the underline effect
+is instead achieved using CSS trickery involving background gradients instead of standard
+`text-decoration`. Credit goes to Adam Schwartz for that technique.
+
+As always, these design choices are merely one approach that Tufte CSS provides by default. Other
+approaches, such as changing color on click or mouseover, or using highlighting or color instead of
+underlining to denote links, could also be made to work. The goal is to make sentences readable
+without interference from links, as well as to make links immediately identifiable even by casual
+web users.
+
+[^bembo]: See Tufte’s comment in the [Tufte book fonts][tufte_book_fonts] thread.
+[^blue_text]: Blue text, while also a widely recognizable clickable-text indicator, is crass and
+distracting. Luckily, it is also rendered unnecessary by the use of underlining.
+
+[tufte_book_fonts]: http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000Vt
+[et_book]: https://github.com/edwardtufte/et-book
 
 </section>

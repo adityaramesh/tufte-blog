@@ -5,7 +5,31 @@ import subprocess
 from bs4 import BeautifulSoup
 
 html_template_path = 'templates/tufte.html'
-pandoc_args = ['--standalone', '--smart']
+
+global_pandoc_args = ['--standalone', '--smart', '-t', 'html5', '--section-divs']
+
+def fix_h2_subtitles(soup):
+	"""
+	<h2 class='subtitle'> tags should really be <p class='subtitle'> tags, but we generate the
+	former instead of the latter so that Pandoc inserts the section dividers for us. Now that
+	this is done, we perform the conversion.
+	"""
+
+	for tag in soup.find_all('section', {'class': 'subtitle'}):
+		children = list(tag.children)
+
+		for c in children:
+			if c.name is None:
+				continue
+
+			assert c.name in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}
+			c.name = 'p'
+			c['class'] = 'subtitle'
+			c.extract()
+
+			tag.insert_before(c)
+			tag['class'].remove('subtitle')
+			return
 
 def fix_code_listings(soup):
 	"""
@@ -28,45 +52,74 @@ def fix_code_listings(soup):
 		tag['class'] = 'code'
 		tag.string = code
 
-def fix_blockquotes_with_citations(soup):
+def fix_citations(soup):
 	"""
-	Puts blockquotes with citations in the format expected by tufte-css.
+	Converts <span class='cite'> to <cite>.
 	"""
 
-	def find_last_p_with_citation(tag):
-		for c in reversed(list(tag.children)):
-			if c.name != 'p':
+	for tag in soup.find_all('span', {'class': 'cite'}):
+		tag.name = 'cite'
+		del tag['class']
+
+def fix_blockquotes_with_footers(soup):
+	"""
+	Puts blockquotes with footers in the format expected by tufte-css.
+	"""
+
+	def find_footer(tag):
+		for child in reversed(list(tag.children)):
+			if child.name is None:
 				continue
-			
-			children = list(c.children)
+			if child.name != 'span' or child['class'][0] != 'footer':
+				return None
 
-			if len(children) != 0 and children[-1].name == 'cite':
-				return c, children[-1]
-			else:
-				return None, None
+			return child
 
-	def is_blockquote_with_citation(tag):
+		return None
+
+	def find_last_p(tag):
+		for child in reversed(list(tag.children)):
+			if child.name is None:
+				continue
+			elif child.name != 'p':
+				return None
+
+			return child
+
+		return None
+
+	def is_blockquote_with_footer(tag):
 		if tag.name != 'blockquote':
 			return False
 
-		return find_last_p_with_citation(tag)[0] is not None
+		last_p = find_last_p(tag)
+		if last_p is None: return None
+		return find_footer(last_p) is not None
 
-	for tag in soup.find_all(is_blockquote_with_citation):
-		last_p, citation = find_last_p_with_citation(tag)
+	def find_anchor(tag):
+		children = list(tag.children)
+		child_count = sum([1 for c in children if c.name is not None])
+		if child_count != 1: return None
 
-		citation.extract()
-		tag['cite'] = citation.a['href']
+		for c in children:
+			if c.name == 'a':
+				return c
 
-		citation.name = 'footer'
-		tag.append(citation)
+		return None
+
+	for tag in soup.find_all(is_blockquote_with_footer):
+		last_p = find_last_p(tag)
+		footer = find_footer(last_p)
+
+		footer.name = 'footer'
+		del footer['class']
+		tag.append(footer)
+
+		a = find_anchor(footer)
+		if a is not None: tag['cite'] = a['href']
 
 def convert_footnotes_to_sidenotes(soup):
-	"""
-	TODO: support for margin notes (side notes without numbers). Ideally, we should be able to
-	support these using 
-	"""
-
-	footnotes_tag = soup.find('div', {'class': 'footnotes'})
+	footnotes_tag = soup.find('section', {'class': 'footnotes'})
 	footnotes_tag.extract()
 
 	def footnote_content(tag):
@@ -101,7 +154,7 @@ def convert_footnotes_to_sidenotes(soup):
 
 		n = a.next_sibling
 
-		if n is not None and n.name == 'span' and n['class'][0] == 'no-number':
+		if n is not None and n.name == 'span' and n['class'][0] == 'unnumbered':
 			use_number = False
 		else:
 			use_number = True
@@ -135,8 +188,10 @@ def convert_footnotes_to_sidenotes(soup):
 
 def postprocess_html_file(path):
 	soup = BeautifulSoup(open(path, 'r'), 'html.parser')
+	fix_h2_subtitles(soup)
 	fix_code_listings(soup)
-	fix_blockquotes_with_citations(soup)
+	fix_citations(soup)
+	fix_blockquotes_with_footers(soup)
 	convert_footnotes_to_sidenotes(soup)
 
 	with open(path, 'w') as f:
@@ -147,8 +202,15 @@ os.mkdir('output')
 
 shutil.copytree('css', 'output/css')
 shutil.copytree('fonts', 'output/fonts')
+
 os.mkdir('output/posts')
 
-subprocess.run(['pandoc', *pandoc_args, '-i', 'posts/tufte.md', '-o', 'output/posts/tufte.html',
+os.mkdir('output/posts/tufte')
+shutil.copytree('posts/tufte/images', 'output/posts/tufte/images')
+
+input_path = 'posts/tufte/tufte.md'
+output_path = 'output/posts/tufte/tufte.html'
+
+subprocess.run(['pandoc', *global_pandoc_args, '-i', input_path, '-o', output_path,
 	'--template=' + html_template_path, '--variable', 'subtitle=Dave Liepmann'])
-postprocess_html_file('output/posts/tufte.html')
+postprocess_html_file(output_path)

@@ -1,12 +1,27 @@
 import os
 import shutil
 import subprocess
+import jinja2
 
 from bs4 import BeautifulSoup
+from argparse import ArgumentParser
 
-html_template_path = 'templates/tufte.html'
+build_targets = {'dev', 'prod'}
 
+site_definitions = {
+	'dev': {'site': {'url': 'file:///Users/aditya/scratch/tufte_pandoc/output'}},
+	'prod': {'site': {'url': 'http://adityaramesh.com'}}
+}
+
+template_input_path = 'templates/tufte.html'
+template_output_path = 'temp/tufte.html'
 global_pandoc_args = ['--standalone', '--smart', '-t', 'html5', '--section-divs']
+
+ap = ArgumentParser()
+ap.add_argument('--target', type=str, default='dev')
+
+args = ap.parse_args()
+assert args.target in build_targets
 
 def fix_h2_subtitles(soup):
 	"""
@@ -197,14 +212,24 @@ def postprocess_html_file(path):
 	with open(path, 'w') as f:
 		f.write(str(soup))
 
+def render_template(path, context):
+	path, filename = os.path.split(path)
+	return jinja2.Environment(loader=jinja2.FileSystemLoader(path)) \
+		.get_template(filename).render(context)
+
+assert not os.path.exists('temp')
 shutil.rmtree('output')
+
+os.mkdir('temp')
 os.mkdir('output')
+
+with open(template_output_path, 'w') as f:
+	f.write(render_template(template_input_path, site_definitions[args.target]))
 
 shutil.copytree('css', 'output/css')
 shutil.copytree('fonts', 'output/fonts')
 
 os.mkdir('output/posts')
-
 os.mkdir('output/posts/tufte')
 shutil.copytree('posts/tufte/images', 'output/posts/tufte/images')
 
@@ -212,5 +237,7 @@ input_path = 'posts/tufte/tufte.md'
 output_path = 'output/posts/tufte/tufte.html'
 
 subprocess.run(['pandoc', *global_pandoc_args, '-i', input_path, '-o', output_path,
-	'--template=' + html_template_path, '--variable', 'subtitle=Dave Liepmann'])
+	'--template=' + template_output_path, '--variable', 'subtitle=Dave Liepmann'])
 postprocess_html_file(output_path)
+
+shutil.rmtree('temp')

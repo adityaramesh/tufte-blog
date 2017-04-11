@@ -12,7 +12,7 @@ $if(keywords)$
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
 $endif$
     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-    <base href="file:///Users/aditya/scratch/tufte_pandoc/output", target="_blank">
+    <base href="{{site.url}}", target="_blank">
     <link rel="stylesheet" href="css/tufte.css"/>
     <link rel="stylesheet" href="css/latex.css"/>
     <link rel="stylesheet" href="css/tufte_pandoc_compat.css"/>

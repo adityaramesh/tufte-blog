@@ -253,9 +253,9 @@ Rhinoceros in Zooological Literature," *Science, Medicine, and History: Essays o
 Scientific Thought and Medical Practice* (London, 1953), ed. E. Ashworth Underwood, 337-356. From
 page 71 of Edward Tufte’s *Visual Explanations*.
 
-[exports_imports]: images/exports-imports.png
-[rhino]: images/rhino.png
-[napoleons_march]: images/napoleons-march.png
+[exports_imports]: posts/tufte/images/exports-imports.png
+[rhino]: posts/tufte/images/rhino.png
+[napoleons_march]: posts/tufte/images/napoleons-march.png
 
 ## Code
 
@@ -309,8 +309,8 @@ region. This quilt has ragged edges, but the image itself is of course still rec
 [image_quilts]: http://imagequilts.com/
 [quilt_forum_post]: http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0003wk
 
-[chinese_calligraphy]: images/imagequilt-chinese-calligraphy.png
-[animal_sounds]: images/imagequilt-animal-sounds.png
+[chinese_calligraphy]: posts/tufte/images/imagequilt-chinese-calligraphy.png
+[animal_sounds]: posts/tufte/images/imagequilt-animal-sounds.png
 
 ## Epilogue
 

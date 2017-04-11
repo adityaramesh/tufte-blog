@@ -12,9 +12,10 @@ $if(keywords)$
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
 $endif$
     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-    <link rel="stylesheet" href="../../css/tufte.css"/>
-    <link rel="stylesheet" href="../../css/latex.css"/>
-    <link rel="stylesheet" href="../../css/tufte_pandoc_compat.css"/>
+    <base href="file:///Users/aditya/scratch/tufte_pandoc/output", target="_blank">
+    <link rel="stylesheet" href="css/tufte.css"/>
+    <link rel="stylesheet" href="css/latex.css"/>
+    <link rel="stylesheet" href="css/tufte_pandoc_compat.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 $if(quotes)$
     <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>

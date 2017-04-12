@@ -1,0 +1,89 @@
+/*
+** Adapted from https://github.com/clayh53/tufte-jekyll/blob/master/css/tufte.scss.
+*/
+
+table {
+	width: auto;
+	margin: 0 auto;
+	border-spacing: 0px;
+	font-size: 1.4rem;
+}
+
+table.fullwidth, figure.fullwidth table {
+	width: 100%;
+	max-width: 100%;
+}
+
+th, td {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+th {
+	font-weight: normal;
+	text-align: center;
+}
+
+td {
+	text-align: left;
+}
+
+th, th.hrule {
+	border-bottom: 1px solid black;
+}
+
+th.no-hrule {
+	border-bottom: none;
+}
+
+th, td {
+	padding-top: 0.35ex;
+	padding-bottom: 0.35ex;
+}
+
+thead:first-child tr:first-child th, tbody:first-child tr:first-child td {
+	padding-top: 0;
+}
+
+thead:last-child tr:last-child td, tbody:last-child tr:last-child td {
+	padding-bottom: 0;
+}
+
+/*
+** Adds extra space to distinguish the table header from the table body.
+*/
+
+thead:nth-last-child(2) tr:last-child th {
+	padding-bottom: 0.6ex;
+}
+
+tbody:nth-child(2) tr:first-child td {
+	padding-top: 0.6ex;
+}
+
+/*
+** TODO: revise this; delete if unused.
+*/
+.booktabs caption, caption {
+	font-size: 1.4rem;
+	text-align: left;
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1ex;
+	caption-side: bottom;
+}
+
+/*
+** TODO: revise this; delete if unused.
+*/
+.table-caption {
+	float: right;
+	clear: right;
+	margin-right: -60%;
+	width: 50%;
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 1.0rem;
+	line-height: 1.96;
+}

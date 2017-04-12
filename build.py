@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 build_targets = {'dev', 'prod'}
 
 site_definitions = {
-	'dev': {'site': {'url': 'file:///Users/aditya/scratch/tufte_pandoc/output'}},
+	'dev': {'site': {'url': 'file:///Users/aditya/projects/tufte_blog/output'}},
 	'prod': {'site': {'url': 'http://adityaramesh.com'}}
 }
 

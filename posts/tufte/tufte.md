@@ -110,7 +110,8 @@ If you prefer sans-serifs, use the `sans` class. It relies on Gill Sans, Tufteâ€
 choice.
 </p>
 
-<!-- The empty span with the 'no-number' class removes the numbering from the previous sidenote. -->
+<!-- The empty span with the 'unnumbered' class (for which `{-}` is shorthand) removes the numbering
+     from the previous sidenote. -->
 
 Links in Tufte CSS match the body text in color and do not change on mouseover or when clicked. Here
 is a [dummy example](#) that goes nowhere. These links are underlined, since this is the most widely
@@ -284,7 +285,7 @@ and overflow as well:
 	(prn (* b d)))
 
 	;; If this proselytizing has worked, check out:
-	;; http://howistart.org/posts/clojure/1</pre>
+	;; http://howistart.org/posts/clojure/1
 
 ## ImageQuilts
 

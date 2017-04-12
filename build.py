@@ -135,18 +135,23 @@ def fix_blockquotes_with_footers(soup):
 
 def convert_footnotes_to_sidenotes(soup):
 	footnotes_tag = soup.find('section', {'class': 'footnotes'})
+	if footnotes_tag is None: return
 	footnotes_tag.extract()
 
-	def footnote_content(tag):
-		"""
-		After each footnote, Pandoc inserts a small anchor with a backarrow symbol that
-		directs the browser back to the citation. 
-		"""
+	def process_footer_child(tag):
+		if tag.name == 'a' and tag.next_sibling is None:
+			return []
+		elif tag.name != 'p':
+			return [tag]
 
 		children = list(tag.children)
 		assert len(children) > 0
-		assert children[-1].name == 'a'
-		return children[:-1]
+
+		if tag.next_sibling is not None:
+			return children
+		else:
+			assert children[-1].name == 'a'
+			return children[:-1]
 
 	footnotes = []
 	counter = 1
@@ -155,11 +160,10 @@ def convert_footnotes_to_sidenotes(soup):
 		if tag.name != 'li':
 			continue
 
-		children = list(tag.children)
-		assert len(children) == 1
-		content = footnote_content(children[0])
-
 		assert int(tag['id'][2:]) == counter
+
+		content = [process_footer_child(c) for c in tag.children]
+		content = [tag for tag_list in content for tag in tag_list]
 		footnotes.append(content)
 		counter += 1
 
@@ -170,6 +174,7 @@ def convert_footnotes_to_sidenotes(soup):
 		n = a.next_sibling
 
 		if n is not None and n.name == 'span' and n['class'][0] == 'unnumbered':
+			n.decompose()
 			use_number = False
 		else:
 			use_number = True
@@ -230,6 +235,28 @@ shutil.copytree('css', 'output/css')
 shutil.copytree('fonts', 'output/fonts')
 
 os.mkdir('output/posts')
+
+for post_name in os.listdir('posts'):
+	src_dir = os.path.join('posts', post_name)
+	dst_dir = os.path.join('output/posts', post_name)
+
+	post_src_path = os.path.join(src_dir, post_name + '.md')
+	post_dst_path = os.path.join(dst_dir, post_name + '.html')
+	assert os.path.isfile(post_src_path)
+
+	os.mkdir(dst_dir)
+
+	for file in os.listdir(src_dir):
+		if os.path.isdir(file):
+			input_path = os.path.join(src_dir, file)
+			output_path = os.path.join(dst_dir, file)
+			shutil.copytree(input_path, output_path)
+
+	subprocess.run(['pandoc', *global_pandoc_args, '-i', post_src_path, '-o', post_dst_path,
+		'--template=' + template_output_path])
+	postprocess_html_file(post_dst_path)
+
+"""
 os.mkdir('output/posts/tufte')
 shutil.copytree('posts/tufte/images', 'output/posts/tufte/images')
 
@@ -239,5 +266,6 @@ output_path = 'output/posts/tufte/tufte.html'
 subprocess.run(['pandoc', *global_pandoc_args, '-i', input_path, '-o', output_path,
 	'--template=' + template_output_path, '--variable', 'subtitle=Dave Liepmann'])
 postprocess_html_file(output_path)
+"""
 
 shutil.rmtree('temp')

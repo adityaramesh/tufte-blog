@@ -12,6 +12,9 @@ table {
 table.fullwidth, figure.fullwidth table {
 	width: 100%;
 	max-width: 100%;
+
+	/* So that side notes can be on the same line as the table. */
+	display: inline;
 }
 
 th, td {
@@ -61,29 +64,12 @@ tbody:nth-child(2) tr:first-child td {
 	padding-top: 0.6ex;
 }
 
-/*
-** TODO: revise this; delete if unused.
-*/
-.booktabs caption, caption {
+table caption {
 	font-size: 1.4rem;
 	text-align: left;
 	width: auto;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 1ex;
+	margin-top: 1.8ex;
 	caption-side: bottom;
-}
-
-/*
-** TODO: revise this; delete if unused.
-*/
-.table-caption {
-	float: right;
-	clear: right;
-	margin-right: -60%;
-	width: 50%;
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 1.0rem;
-	line-height: 1.96;
 }

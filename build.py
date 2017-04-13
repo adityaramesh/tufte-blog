@@ -23,6 +23,17 @@ ap.add_argument('--target', type=str, default='dev')
 args = ap.parse_args()
 assert args.target in build_targets
 
+if args.target == 'dev':
+	mathjax_url = 'output/js/MathJax/MathJax.js'
+else:
+	mathjax_url = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js'
+
+site_url = site_definitions[args.target]['site']['url']
+#mathjax_config = os.path.join(site_url, 'js/MathJax/config/custom/TeX-AMS_HTML-full-GyrePagella.js')
+mathjax_config = 'TeX-AMS_HTML-full'
+
+global_pandoc_args.append('--mathjax={}?config={}'.format(mathjax_url, mathjax_config))
+
 def fix_h2_subtitles(soup):
 	"""
 	<h2 class='subtitle'> tags should really be <p class='subtitle'> tags, but we generate the
@@ -271,8 +282,15 @@ os.mkdir('output')
 with open(template_output_path, 'w') as f:
 	f.write(render_template(template_input_path, site_definitions[args.target]))
 
-shutil.copytree('css', 'output/css')
-shutil.copytree('fonts', 'output/fonts')
+
+def make_symlink(src_rel_path):
+	abs_src_path = os.path.join(os.getcwd(), src_rel_path)
+	dst_path = os.path.join('output', src_rel_path)
+	os.symlink(abs_src_path, dst_path)
+
+make_symlink('js')
+make_symlink('css')
+make_symlink('fonts')
 
 os.mkdir('output/posts')
 

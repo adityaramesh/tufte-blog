@@ -5,7 +5,7 @@ author: Aditya Ramesh
 
 # Tables
 
-This document shows the three kinds of tables supported by `tufte-blog`. The tables in this document
+This document shows the four kinds of tables supported by `tufte-blog`. The tables in this document
 are adapted from those in the documentation for [Pandoc][pandoc] and [Tufte-Jekyll.][tufte_jekyll]
 
 [pandoc]: http://pandoc.org
@@ -86,6 +86,26 @@ Shortages: energy, food                                  68                     
 
 Table: This is an example of a table that is forced to take up the entirety of the page width.
 </figure>
+
+<figure>
+[^margin_caption_3][]{-}
+
++---------------+---------------+--------------------+
+| Fruit         | Price         | Advantages         |
++:==============+:==============+:===================+
+| Bananas       | $1.34         | - built-in wrapper |
+|               |               | - bright color     |
++---------------+---------------+--------------------+
+| Oranges       | $2.10         | - cures scurvy     |
+|               |               | - tasty            |
++---------------+---------------+--------------------+
+
+</figure>
+
+[^margin_caption_3]: This table was created using Pandoc's grid table syntax. It can contain
+arbitrary block elements, such as paragraphs, code blocks, lists, etc. **However, it is not
+compatible with the `fullwidth` class.** Neither the table nor its enclosing figure should be
+assigned the `fullwidth` class.
 
 ## Unsupported Features
 

@@ -82,12 +82,12 @@ def fix_fullwidth_tables(soup):
 			if n.name is not None:
 				break
 
-		if n is not None and n.name == 'span' and 'class' in n and \
-			n['class'][0] == 'fullwidth':
+		if n is not None and n.name == 'span' and 'class' in n.attrs and \
+			'fullwidth' in n['class']:
 
 			n.decompose()
 
-			if 'class' not in tag: tag['class'] = []
+			if 'class' not in tag.attrs: tag['class'] = []
 			tag['class'].append('fullwidth')
 			del tag['style']
 
@@ -148,19 +148,21 @@ def fix_blockquotes_with_footers(soup):
 		a = find_anchor(footer)
 		if a is not None: tag['cite'] = a['href']
 
-def denest_singleton_footnotes(soup):
+def denest_anchors_and_spans_in_figures(soup):
 	for figure_tag in soup.find_all('figure'):
 		for child in figure_tag.children:
 			if child.name == 'p':
 				c = list(child.children)
 				if len(c) == 0 or len(c) > 2: continue
 
-				b1 = c[0].name == 'a' and 'footnoteRef' in c[0]['class']
-				b2 = len(c) == 1
-				b3 = len(c) == 2 and c[1].name == 'span' and \
+				p1 = c[0].name == 'a' and 'footnoteRef' in c[0]['class']
+				p2 = len(c) == 1
+				p3 = len(c) == 2 and c[1].name == 'span' and \
 					'unnumbered' in c[1]['class'] 
 
-				if b1 and (b2 or b3):
+				q1 = len(c) == 1 and c[0].name == 'span'
+
+				if (p1 and (p2 or p3)) or q1:
 					for tag in c:
 						tag.extract()
 						child.insert_before(tag)
@@ -249,7 +251,7 @@ def postprocess_html_file(path):
 	fix_fullwidth_tables(soup)
 	fix_blockquotes_with_footers(soup)
 
-	denest_singleton_footnotes(soup)
+	denest_anchors_and_spans_in_figures(soup)
 	convert_footnotes_to_sidenotes(soup)
 
 	with open(path, 'w') as f:

@@ -9,11 +9,22 @@ table {
 	font-size: 1.4rem;
 }
 
+table p, table ul, table ol {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+table li {
+	margin: 0 0 0 1em;
+	padding: 0;
+}
+
 table.fullwidth, figure.fullwidth table {
 	width: 100%;
 	max-width: 100%;
 
-	/* So that side notes can be on the same line as the table. */
+	/* Allows for side notes to be on the same line as the table. */
 	display: inline;
 }
 

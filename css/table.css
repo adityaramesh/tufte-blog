@@ -7,6 +7,7 @@ table {
 	margin: 0 auto;
 	border-spacing: 0px;
 	font-size: 1.4rem;
+	overflow-x: scroll;
 }
 
 table p, table ul, table ol {
@@ -20,12 +21,16 @@ table li {
 	padding: 0;
 }
 
+@media (max-width: 760px) {
+	figure { max-width: 100%; }
+}
+
 table.fullwidth, figure.fullwidth table {
 	width: 100%;
 	max-width: 100%;
 
 	/* Allows for side notes to be on the same line as the table. */
-	display: inline;
+	display: inline-block;
 }
 
 th, td {

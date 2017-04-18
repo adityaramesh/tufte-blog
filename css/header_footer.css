@@ -3,7 +3,7 @@
 */
 
 header > nav {
-	padding: 2rem 2rem;
+	padding: 3rem 3rem 0 0;
 }
 
 @media (max-width: 760px) {
@@ -57,5 +57,5 @@ body > footer hr {
 
 body > footer .credits {
     text-align: center;
-    margin: 1.4rem 0 1.2rem 0;
+    padding: 1.4rem 0 1.2rem 0;
 }

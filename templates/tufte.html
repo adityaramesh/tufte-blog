@@ -12,9 +12,11 @@ $if(keywords)$
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
 $endif$
     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-    <base href="{{site.url}}", target="_blank">
+    <base href="{{site.url}}", target="_self">
+    <link rel="stylesheet" href="css/reset.css"/>
     <link rel="stylesheet" href="css/tufte.css"/>
     <link rel="stylesheet" href="css/latex.css"/>
+    <link rel="stylesheet" href="css/header_footer.css"/>
     <link rel="stylesheet" href="css/table.css"/>
     <link rel="stylesheet" href="css/tufte_pandoc_compat.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">

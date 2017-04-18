@@ -1,0 +1,61 @@
+/*
+** Adapted from https://github.com/clayh53/tufte-jekyll/blob/master/css/tufte.scss
+*/
+
+header > nav {
+	padding: 2rem 2rem;
+}
+
+@media (max-width: 760px) {
+    header > nav { padding-right: 0px; }
+}
+
+header > nav a {
+    display: block;
+    float: right;
+    padding: 0;
+    margin: 0 2rem 0 0;
+    vertical-align: baseline;
+
+    font-size: 1.3rem;
+    font-family: "Gill Sans";
+    color: #a00000;
+
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    /* Needed to make the links clickable. */
+    position: relative;
+    z-index: 1;
+}
+
+header > nav a:first-child {
+    margin-right: 0;
+}
+
+header nav a:link {
+    background-image: none;
+}
+
+body > footer {
+    width: 95%;
+    font-size: 1.1rem;
+}
+
+body > footer hr {
+    display: block;
+    width: 100%;
+    border: 0;
+    margin: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+}
+
+body > footer .credits {
+    text-align: center;
+    margin: 1.4rem 0 1.2rem 0;
+}

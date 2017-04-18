@@ -1,0 +1,14 @@
+/*
+** Adapted from https://github.com/clayh53/tufte-jekyll/blob/master/css/tufte.scss
+*/
+
+* { margin: 0; padding: 0; }
+
+/* clearfix hack after Cederholm (group class name) */
+.group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+html, body { height: 100%; }

@@ -6,16 +6,35 @@ import jinja2
 from bs4 import BeautifulSoup
 from argparse import ArgumentParser
 
+temp_dir = 'temp'
+output_dir = 'output'
+
+header_template_path = 'templates/header.html'
+footer_template_path = 'templates/footer.html'
+main_template_path   = 'templates/tufte.html'
+
+def template_output_path(path):
+	filename = os.path.basename(path)
+	return os.path.join(temp_dir, filename)
+
+def render_template(template_path, context):
+	path, filename = os.path.split(template_path)
+	output = jinja2.Environment(loader=jinja2.FileSystemLoader(path)) \
+		.get_template(filename).render(context)
+
+	output_path = template_output_path(template_path)
+	with open(output_path, 'w') as f: f.write(output)
+
+global_pandoc_args = ['--standalone', '--smart', '-t', 'html5', '--section-divs',
+	'--include-before-body={}'.format(template_output_path(header_template_path)),
+	'--include-after-body={}'.format(template_output_path(footer_template_path))]
+
 build_targets = {'dev', 'prod'}
 
 site_definitions = {
-	'dev': {'site': {'url': 'file:///Users/aditya/projects/tufte_blog/output'}},
+	'dev': {'site': {'url': 'file://{}/output'.format(os.getcwd())}},
 	'prod': {'site': {'url': 'http://adityaramesh.com'}}
 }
-
-template_input_path = 'templates/tufte.html'
-template_output_path = 'temp/tufte.html'
-global_pandoc_args = ['--standalone', '--smart', '-t', 'html5', '--section-divs']
 
 ap = ArgumentParser()
 ap.add_argument('--target', type=str, default='dev')
@@ -270,35 +289,33 @@ def postprocess_html_file(path):
 	with open(path, 'w') as f:
 		f.write(str(soup))
 
-def render_template(path, context):
-	path, filename = os.path.split(path)
-	return jinja2.Environment(loader=jinja2.FileSystemLoader(path)) \
-		.get_template(filename).render(context)
+if os.path.exists(temp_dir): shutil.rmtree(temp_dir)
+if os.path.exists(output_dir): shutil.rmtree(output_dir)
 
-assert not os.path.exists('temp')
-shutil.rmtree('output')
+os.mkdir(temp_dir)
+os.mkdir(output_dir)
 
-os.mkdir('temp')
-os.mkdir('output')
-
-with open(template_output_path, 'w') as f:
-	f.write(render_template(template_input_path, site_definitions[args.target]))
-
+render_template(main_template_path, site_definitions[args.target])
 
 def make_symlink(src_rel_path):
 	abs_src_path = os.path.join(os.getcwd(), src_rel_path)
-	dst_path = os.path.join('output', src_rel_path)
+	dst_path = os.path.join(output_dir, src_rel_path)
 	os.symlink(abs_src_path, dst_path)
 
 make_symlink('js')
 make_symlink('css')
 make_symlink('fonts')
 
-os.mkdir('output/posts')
+posts_dir = os.path.join(output_dir, 'posts')
+os.mkdir(posts_dir)
 
 for post_name in os.listdir('posts'):
+	context = {'page': {'file_name': post_name}}
+	render_template(header_template_path, context)
+	render_template(footer_template_path, context)
+
 	src_dir = os.path.join('posts', post_name)
-	dst_dir = os.path.join('output/posts', post_name)
+	dst_dir = os.path.join(posts_dir, post_name)
 
 	post_src_path = os.path.join(src_dir, post_name + '.md')
 	post_dst_path = os.path.join(dst_dir, post_name + '.html')
@@ -312,8 +329,17 @@ for post_name in os.listdir('posts'):
 			output_path = os.path.join(dst_dir, file)
 			shutil.copytree(input_path, output_path)
 
-	subprocess.run(['pandoc', *global_pandoc_args, '-i', post_src_path, '-o', post_dst_path,
-		'--template=' + template_output_path])
+	proc = subprocess.Popen(['pandoc', post_src_path, *global_pandoc_args, 
+		'--output=' + post_dst_path,
+		'--template=' + template_output_path(main_template_path)],
+		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	proc.wait()
+
+	if proc.returncode is not None and proc.returncode != 0:
+		print("Invocation of Pandoc failed.")
+		print("Arguments: {}.".format(proc.args))
+		print("Output: {}.".format(proc.communicate()))
+
 	postprocess_html_file(post_dst_path)
 
-shutil.rmtree('temp')
+shutil.rmtree(temp_dir)

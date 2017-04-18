@@ -32,7 +32,7 @@ global_pandoc_args = ['--standalone', '--smart', '-t', 'html5', '--section-divs'
 build_targets = {'dev', 'prod'}
 
 site_definitions = {
-	'dev': {'site': {'url': 'file://{}/output'.format(os.getcwd())}},
+	'dev': {'site': {'url': 'file://{}/output/'.format(os.getcwd())}},
 	'prod': {'site': {'url': 'http://adityaramesh.com'}}
 }
 
@@ -309,11 +309,35 @@ make_symlink('fonts')
 posts_dir = os.path.join(output_dir, 'posts')
 os.mkdir(posts_dir)
 
-for post_name in os.listdir('posts'):
-	context = {'page': {'file_name': post_name}}
+def render_page(src_path, dst_path):
+	rel_path = '/'.join(dst_path.split('/')[1:])
+
+	context = {'page': {'name': rel_path}}
 	render_template(header_template_path, context)
 	render_template(footer_template_path, context)
 
+	proc = subprocess.Popen(['pandoc', src_path, *global_pandoc_args, 
+		'--output=' + dst_path,
+		'--template=' + template_output_path(main_template_path)],
+		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	proc.wait()
+
+	if proc.returncode is not None and proc.returncode != 0:
+		print("Invocation of Pandoc failed.")
+		print("Arguments: {}.".format(proc.args))
+		print("Output: {}.".format(proc.communicate()))
+
+	postprocess_html_file(dst_path)
+
+for page_name in os.listdir('.'):
+	if not os.path.isfile(page_name): continue
+	filename, extension = os.path.splitext(page_name)
+	if extension != '.md': continue
+
+	dst_path = os.path.join(output_dir, filename + '.html')
+	render_page(page_name, dst_path)
+
+for post_name in os.listdir('posts'):
 	src_dir = os.path.join('posts', post_name)
 	dst_dir = os.path.join(posts_dir, post_name)
 
@@ -324,22 +348,12 @@ for post_name in os.listdir('posts'):
 	os.mkdir(dst_dir)
 
 	for file in os.listdir(src_dir):
-		if os.path.isdir(file):
-			input_path = os.path.join(src_dir, file)
+		input_path = os.path.join(src_dir, file)
+
+		if os.path.isdir(input_path):
 			output_path = os.path.join(dst_dir, file)
 			shutil.copytree(input_path, output_path)
 
-	proc = subprocess.Popen(['pandoc', post_src_path, *global_pandoc_args, 
-		'--output=' + post_dst_path,
-		'--template=' + template_output_path(main_template_path)],
-		stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	proc.wait()
-
-	if proc.returncode is not None and proc.returncode != 0:
-		print("Invocation of Pandoc failed.")
-		print("Arguments: {}.".format(proc.args))
-		print("Output: {}.".format(proc.communicate()))
-
-	postprocess_html_file(post_dst_path)
+	render_page(post_src_path, post_dst_path)
 
 shutil.rmtree(temp_dir)

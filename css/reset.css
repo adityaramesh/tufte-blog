@@ -2,7 +2,10 @@
 ** Adapted from https://github.com/clayh53/tufte-jekyll/blob/master/css/tufte.scss
 */
 
-* { margin: 0; padding: 0; }
+* {
+	margin: 0;
+	padding: 0;
+}
 
 /* clearfix hack after Cederholm (group class name) */
 .group:after {
@@ -11,7 +14,9 @@
 	clear: both;
 }
 
-html, body { height: 100%; }
+html, body {
+	height: 100%;
+}
 
 blockquote {
 	margin: 1em 40px 1em 40px;

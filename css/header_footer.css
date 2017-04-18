@@ -3,7 +3,10 @@
 */
 
 header > nav {
-	padding: 3rem 3rem 0 0;
+    padding: 3rem 3rem 0 0;
+
+    font-size: 1.3rem;
+    font-family: "Gill Sans";
 }
 
 @media (max-width: 760px) {
@@ -15,11 +18,6 @@ header > nav a {
     float: right;
     padding: 0;
     margin: 0 2rem 0 0;
-    vertical-align: baseline;
-
-    font-size: 1.3rem;
-    font-family: "Gill Sans";
-    color: #a00000;
 
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -38,9 +36,27 @@ header nav a:link {
     background-image: none;
 }
 
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+body > .spacer {
+	flex: 1;
+}
+
 body > footer {
     width: 95%;
     font-size: 1.1rem;
+}
+
+body > footer code {
+    font-size: 0.90rem;
+}
+
+body > footer a code {
+    font-size: 0.90rem;
 }
 
 body > footer hr {

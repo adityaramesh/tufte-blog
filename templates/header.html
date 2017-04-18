@@ -1,9 +1,9 @@
 <header>
     <nav>
-        {% if page.file_name == "posts.html" %}
+        {% if page.path == "posts.html" %}
             <a href="contact.html">Contact</a>
             <a class="active" href="posts.html" class="active">Posts</a>
-        {% elif page.file_name == "contact.html" %}
+        {% elif page.path == "contact.html" %}
             <a class="active" href="contact.html" class="active">Contact</a>
             <a href="posts.html">Posts</a>
         {% else %}

@@ -12,7 +12,7 @@ $if(keywords)$
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
 $endif$
     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-    <base href="{{site.url}}", target="_self">
+    <base href="{{site.url}}" target="_self">
     <link rel="stylesheet" href="css/reset.css"/>
     <link rel="stylesheet" href="css/tufte.css"/>
     <link rel="stylesheet" href="css/latex.css"/>
@@ -46,6 +46,7 @@ $endfor$
     <article>
 $body$
     </article>
+    <div class="spacer"></div>
 $for(include-after)$
 $include-after$
 $endfor$

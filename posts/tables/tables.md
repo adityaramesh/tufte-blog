@@ -5,8 +5,9 @@ author: Aditya Ramesh
 
 # Tables
 
-This document shows the four kinds of tables supported by `tufte-blog`. The tables in this document
-are adapted from those in the documentation for [Pandoc][pandoc] and [Tufte-Jekyll.][tufte_jekyll]
+This document shows the four kinds of tables supported by Tufte-Blog. The
+tables in this document are adapted from those in the documentation for
+[Pandoc][pandoc] and [Tufte-Jekyll.][tufte_jekyll]
 
 [pandoc]: http://pandoc.org
 [tufte_jekyll]: http://github.com/clayh53/tufte-jekyll
@@ -137,6 +138,6 @@ resolution and DPI. Experience leads me to believe this solution is currently un
 following reasons: (1) it's seldom possible to obtain the true DPI; (2) it's very difficult to
 fluidly vary the font size, line height, margins and paddings, etc., so that the page looks good
 across a diverse set of displays; and (3), there is a minimum font size beyond which the text
-becomes illegible, so each table column should ideally have a minimum width in the first place.
+becomes illegible, so each table column should have a minimum width in the first place.
 
 [large_table]: output/posts/tables/tables.html#large-table

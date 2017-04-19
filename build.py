@@ -302,9 +302,15 @@ def make_symlink(src_rel_path):
 	dst_path = os.path.join(output_dir, src_rel_path)
 	os.symlink(abs_src_path, dst_path)
 
+def copy_resource(src_rel_path):
+	dst_path = os.path.join(output_dir, src_rel_path)
+	shutil.copytree(src_rel_path, dst_path)
+
+"""
 make_symlink('js')
 make_symlink('css')
 make_symlink('fonts')
+"""
 
 posts_dir = os.path.join(output_dir, 'posts')
 os.mkdir(posts_dir)

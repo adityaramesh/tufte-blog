@@ -335,7 +335,7 @@ def render_page(src_path, dst_path):
 for page_name in os.listdir('.'):
 	if not os.path.isfile(page_name): continue
 	filename, extension = os.path.splitext(page_name)
-	if extension != '.md': continue
+	if filename == 'README' or extension != '.md': continue
 
 	dst_path = os.path.join(output_dir, filename + '.html')
 	render_page(page_name, dst_path)

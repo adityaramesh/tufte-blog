@@ -129,7 +129,7 @@ Tables like the following currently cannot be created without using raw HTML. Th
 </table>
 </figure>
 
-[pandoc_rowspan_colspan]: https://github.com/jgm/pandoc/issues/3274
+[pandoc_rowspan_colspan]: http://github.com/jgm/pandoc/issues/3274
 
 In the future, it may be useful to allow the user to optionally specify a minimum width for each
 column of a table. Large tables like [this one][large_table] don't look very good on small screens.
@@ -140,4 +140,4 @@ fluidly vary the font size, line height, margins and paddings, etc., so that the
 across a diverse set of displays; and (3), there is a minimum font size beyond which the text
 becomes illegible, so each table column should have a minimum width in the first place.
 
-[large_table]: output/posts/tables/tables.html#large-table
+[large_table]: posts/tables/tables.html#large-table

@@ -3,4 +3,4 @@
 *.vim
 *.swp
 
-./output
+/output

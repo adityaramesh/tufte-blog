@@ -33,7 +33,7 @@ build_targets = {'dev', 'prod'}
 
 site_definitions = {
 	'dev': {'site': {'url': 'file://{}/output/'.format(os.getcwd())}},
-	'prod': {'site': {'url': 'http://adityaramesh.com/tufte-blog'}}
+	'prod': {'site': {'url': 'http://adityaramesh.com/tufte-blog/'}}
 }
 
 ap = ArgumentParser()
@@ -304,7 +304,7 @@ def symlink_resource(src_rel_path):
 
 def copy_resource(src_rel_path):
 	dst_path = os.path.join(output_dir, src_rel_path)
-	shutil.copytree(abs_src_path, dst_path)
+	shutil.copytree(src_rel_path, dst_path)
 
 for resource in ['js', 'css', 'fonts']:
 	if args.target == 'dev':

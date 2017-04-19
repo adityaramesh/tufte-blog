@@ -2,6 +2,20 @@
 ** Adapted from https://github.com/clayh53/tufte-jekyll/blob/master/css/tufte.scss
 */
 
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+body > header, body > footer {
+    flex: none;
+}
+
+body > article {
+    flex: 1 0 auto;
+}
+
 header > nav {
     padding: 3rem 3rem 0 0;
 
@@ -34,16 +48,6 @@ header > nav a:first-child {
 
 header nav a:link {
     background-image: none;
-}
-
-body {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-}
-
-body > .spacer {
-	flex: 1;
 }
 
 body > footer {

@@ -310,11 +310,8 @@ posts_dir = os.path.join(output_dir, 'posts')
 os.mkdir(posts_dir)
 
 def render_page(src_path, dst_path):
-	rel_path = '/'.join(dst_path.split('/')[1:])
-
-	context = {'page': {'name': rel_path}}
-	render_template(header_template_path, context)
-	render_template(footer_template_path, context)
+	render_template(header_template_path, {})
+	render_template(footer_template_path, {})
 
 	proc = subprocess.Popen(['pandoc', src_path, *global_pandoc_args, 
 		'--output=' + dst_path,

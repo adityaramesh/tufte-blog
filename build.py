@@ -33,7 +33,7 @@ build_targets = {'dev', 'prod'}
 
 site_definitions = {
 	'dev': {'site': {'url': 'file://{}/output/'.format(os.getcwd())}},
-	'prod': {'site': {'url': 'http://adityaramesh.com'}}
+	'prod': {'site': {'url': 'http://adityaramesh.com/tufte-blog'}}
 }
 
 ap = ArgumentParser()
@@ -297,14 +297,20 @@ os.mkdir(output_dir)
 
 render_template(main_template_path, site_definitions[args.target])
 
-def make_symlink(src_rel_path):
+def symlink_resource(src_rel_path):
 	abs_src_path = os.path.join(os.getcwd(), src_rel_path)
 	dst_path = os.path.join(output_dir, src_rel_path)
 	os.symlink(abs_src_path, dst_path)
 
-make_symlink('js')
-make_symlink('css')
-make_symlink('fonts')
+def copy_resource(src_rel_path):
+	dst_path = os.path.join(output_dir, src_rel_path)
+	shutil.copytree(abs_src_path, dst_path)
+
+for resource in ['js', 'css', 'fonts']:
+	if args.target == 'dev':
+		symlink_resource(resource)
+	else:
+		copy_resource(resource)
 
 posts_dir = os.path.join(output_dir, 'posts')
 os.mkdir(posts_dir)

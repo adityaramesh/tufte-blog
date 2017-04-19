@@ -33,7 +33,7 @@ build_targets = {'dev', 'prod'}
 
 site_definitions = {
 	'dev': {'site': {'url': 'file://{}/output/'.format(os.getcwd())}},
-	'prod': {'site': {'url': 'http://adityaramesh.com'}}
+	'prod': {'site': {'url': 'http://adityaramesh.com/tufte-blog'}}
 }
 
 ap = ArgumentParser()

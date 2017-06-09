@@ -18,13 +18,15 @@ body > article {
 
 header > nav {
     padding: 3rem 3rem 0 0;
-
     font-size: 1.3rem;
     font-family: "Gill Sans";
 }
 
 @media (max-width: 760px) {
-    header > nav { padding-right: 0px; }
+    header > nav {
+        padding-top: 2rem;
+        padding-right: 0px;
+    }
 }
 
 header > nav a {

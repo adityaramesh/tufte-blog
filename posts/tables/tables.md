@@ -15,15 +15,15 @@ tables in this document are adapted from those in the documentation for
 <figure>
 [^margin_caption_1][]{-}
 
--------------------------
-Left       Center   Right
---------- -------- ------
-Aardvarks    1      $3.50
+-------------------------------------
+Left             Center         Right
+------------ ------------- ----------
+Aardvarks          1            $3.50
 
-Cats         5      $4.23
+Cats               5            $4.23
 
-Dogs         3      $5.29
--------------------------
+Dogs               3            $5.29
+-------------------------------------
 </figure>
 
 [^margin_caption_1]: This is an example of a normal table. It is capable of stretching to take up

@@ -109,6 +109,12 @@ def fix_citations(soup):
 		del tag['class']
 
 def fix_fullwidth_tables(soup):
+	"""
+	We use a hack to allow the user to specify fullwidth tables. This hack inserts involves
+	inserting a `span` tag after a table: during postprocessing, we need to look for these tags,
+	remove them, and add the `fullwidth` class to the tables to which they correspond.
+	"""
+
 	for tag in soup.find_all('table'):
 		for n in tag.next_siblings:
 			if n.name is not None:
@@ -181,6 +187,11 @@ def fix_blockquotes_with_footers(soup):
 		if a is not None: tag['cite'] = a['href']
 
 def denest_anchors_and_spans_in_figures(soup):
+	"""
+	Pandoc nests standalone anchors and spans that occur in figures within `p` tags. This
+	function denests them.
+	"""
+
 	for figure_tag in soup.find_all('figure'):
 		for child in figure_tag.children:
 			if child.name == 'p':
@@ -202,6 +213,13 @@ def denest_anchors_and_spans_in_figures(soup):
 					child.decompose()
 
 def convert_footnotes_to_sidenotes(soup):
+	"""
+	Tufte CSS uses sidenotes in place of sidenotes, so that the notes appear beside the text
+	that refers to them. We use Pandoc's footnote syntax to create sidenotes, but this has the
+	unfortunate consequence that all sidenotes are lumped together at the bottom of the page.
+	This function converts these footnotes back to sidenotes.
+	"""
+
 	footnotes_tag = soup.find('section', {'class': 'footnotes'})
 	if footnotes_tag is None: return
 	footnotes_tag.extract()
@@ -274,6 +292,30 @@ def convert_footnotes_to_sidenotes(soup):
 		input.insert_after(span)
 		a.decompose()
 
+def insert_table_wrappers(soup):
+	"""
+	Figures containing tables need to have the `text-align: center` property, so that oversized
+	tables can scroll.
+	"""
+
+	def process_child(c):
+		if c.name != 'table':
+			return c
+
+		div = soup.new_tag('div')
+		div['class'] = 'table-wrapper'
+		div.append(c)
+		return div
+
+	for tag in soup.find_all('figure'):
+		children = [process_child(c) for c in tag.children]
+
+		for child in tag.children:
+			child.extract()
+
+		for child in children:
+			tag.append(child)
+
 def postprocess_html_file(path):
 	soup = BeautifulSoup(open(path, 'r'), 'html.parser')
 
@@ -285,6 +327,7 @@ def postprocess_html_file(path):
 
 	denest_anchors_and_spans_in_figures(soup)
 	convert_footnotes_to_sidenotes(soup)
+	insert_table_wrappers(soup)
 
 	with open(path, 'w') as f:
 		f.write(str(soup))

@@ -3,13 +3,12 @@
 */
 
 table {
+	width: 40%;
 	width: auto;
 	margin: 0 auto;
 	border-spacing: 0px;
 	font-size: 1.4rem;
 
-	/* Both are needed in order to allow oversized tables to scroll. */
-	display: inline-block;
 	overflow-x: scroll;
 }
 

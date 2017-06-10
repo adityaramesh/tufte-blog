@@ -110,9 +110,13 @@ def fix_citations(soup):
 
 def fix_fullwidth_tables(soup):
 	"""
-	We use a hack to allow the user to specify fullwidth tables. This hack inserts involves
+	We use a hack to allow the user to specify full-width tables. This hack inserts involves
 	inserting a `span` tag after a table: during postprocessing, we need to look for these tags,
-	remove them, and add the `fullwidth` class to the tables to which they correspond.
+	remove them, and add the `fullwidth` class to the tables associated with the span tags.
+
+	Also, some table syntaxes supported by Pandoc produce tables with `style` attributes
+	specifying fixed-width percentages. These are ok for regular tables, but should be removed
+	for tables that are supposed to be full-width.
 	"""
 
 	for tag in soup.find_all('table'):
@@ -292,30 +296,6 @@ def convert_footnotes_to_sidenotes(soup):
 		input.insert_after(span)
 		a.decompose()
 
-def insert_table_wrappers(soup):
-	"""
-	Figures containing tables need to have the `text-align: center` property, so that oversized
-	tables can scroll.
-	"""
-
-	def process_child(c):
-		if c.name != 'table':
-			return c
-
-		div = soup.new_tag('div')
-		div['class'] = 'table-wrapper'
-		div.append(c)
-		return div
-
-	for tag in soup.find_all('figure'):
-		children = [process_child(c) for c in tag.children]
-
-		for child in tag.children:
-			child.extract()
-
-		for child in children:
-			tag.append(child)
-
 def postprocess_html_file(path):
 	soup = BeautifulSoup(open(path, 'r'), 'html.parser')
 
@@ -327,7 +307,6 @@ def postprocess_html_file(path):
 
 	denest_anchors_and_spans_in_figures(soup)
 	convert_footnotes_to_sidenotes(soup)
-	insert_table_wrappers(soup)
 
 	with open(path, 'w') as f:
 		f.write(str(soup))

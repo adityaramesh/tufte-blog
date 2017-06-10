@@ -15,15 +15,15 @@ tables in this document are adapted from those in the documentation for
 <figure>
 [^margin_caption_1][]{-}
 
--------------------------------------
-Left             Center         Right
------------- ------------- ----------
-Aardvarks          1            $3.50
+-------------------------
+Left       Center   Right
+--------- -------- ------
+Aardvarks    1      $3.50
 
-Cats               5            $4.23
+Cats         5      $4.23
 
-Dogs               3            $5.29
--------------------------------------
+Dogs         3      $5.29
+-------------------------
 </figure>
 
 [^margin_caption_1]: This is an example of a normal table. It is capable of stretching to take up
@@ -54,8 +54,6 @@ Valiant            18.1    6   160 105  2.76 3.46
 text width.
 
 <figure class="fullwidth">
-[]{#large-table}
-
 ----------------------------------------------------------------------------------------------
 Content and tone of front-page articles in 94     Number of  Percent of articles with negative
 U.S. newspapers, October and November, 1974        articles    criticism of specific person or
@@ -111,10 +109,18 @@ assigned the `fullwidth` class.
 ## Unsupported Features
 
 Tables like the following currently cannot be created without using raw HTML. This is because Pandoc
-[does not yet support the `rowspan` and `colspan` attributes.][pandoc_rowspan_colspan]
+[does not yet support the `rowspan` and `colspan` attributes.][pandoc_rowspan_colspan] Note that in
+order for raw HTML tables to correctly scroll on overflow, they should either (1) be `fullwidth` and
+contain a `colgroup` specifying the relative sizes of the columns, or (2) specify the table width
+(e.g. as a percentage of the parent width) using the `style` attribute.
 
 <figure>
-<table>
+<table class="fullwidth">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 3%">
+</colgroup>
 <thead>
 <tr><th colspan="2" class="cmid">Items</th><th class="no-hrule"></th></tr>
 <tr><th style="text-align: left">Animal</th><th style="text-align: left">Description</th><th style="text-align: right">Price ($)</th></tr>

@@ -362,23 +362,22 @@ for page_name in os.listdir('.'):
 	dst_path = os.path.join(output_dir, filename + '.html')
 	render_page(page_name, dst_path)
 
-for post_name in os.listdir('posts'):
-	src_dir = os.path.join('posts', post_name)
-	dst_dir = os.path.join(posts_dir, post_name)
+for post_dir_name in os.listdir('posts'):
+	src_dir = os.path.join('posts', post_dir_name)
+	dst_dir = os.path.join(posts_dir, post_dir_name)
+	if not os.path.isdir(src_dir): continue
 
-	post_src_path = os.path.join(src_dir, post_name + '.md')
-	post_dst_path = os.path.join(dst_dir, post_name + '.html')
-	assert os.path.isfile(post_src_path)
+	for file_name in os.listdir(src_dir):
+		basename, extension = os.path.splitext(file_name)
+		src_path = os.path.join(src_dir, file_name)
 
-	os.mkdir(dst_dir)
-
-	for file in os.listdir(src_dir):
-		input_path = os.path.join(src_dir, file)
-
-		if os.path.isdir(input_path):
-			output_path = os.path.join(dst_dir, file)
-			shutil.copytree(input_path, output_path)
-
-	render_page(post_src_path, post_dst_path)
+		if os.path.isfile(src_path) and extension == '.md':
+			if not os.path.exists(dst_dir): os.mkdir(dst_dir)
+			dst_path = os.path.join(dst_dir, basename + '.html')
+			render_page(src_path, dst_path)
+		elif os.path.isdir(src_path):
+			if not os.path.exists(dst_dir): os.mkdir(dst_dir)
+			dst_path = os.path.join(dst_dir, file_name)
+			shutil.copytree(src_path, dst_path)
 
 shutil.rmtree(temp_dir)

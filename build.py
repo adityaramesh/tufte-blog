@@ -216,6 +216,23 @@ def denest_anchors_and_spans_in_figures(soup):
 
 					child.decompose()
 
+def denest_paragraphs_in_list_items(soup):
+	"""
+	When list items are separated by newlines, Pandoc wraps the content of each list item within
+	paragraphs. This adds unnecessary clutter to the markup, unless there is more than one
+	paragraph in the list item. In the case where there is a single paragraph, we denest its
+	contents.
+	"""
+
+	for tag in soup.find_all('li'):
+		children = list(tag.children)
+
+		if len(children) == 1 and children[0].name == 'p':
+			children[0].extract()
+
+			for c in list(children[0].contents):
+				tag.append(c)
+
 def convert_footnotes_to_sidenotes(soup):
 	"""
 	Tufte CSS uses sidenotes in place of sidenotes, so that the notes appear beside the text
@@ -306,6 +323,7 @@ def postprocess_html_file(path):
 	fix_blockquotes_with_footers(soup)
 
 	denest_anchors_and_spans_in_figures(soup)
+	denest_paragraphs_in_list_items(soup)
 	convert_footnotes_to_sidenotes(soup)
 
 	with open(path, 'w') as f:

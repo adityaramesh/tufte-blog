@@ -9,3 +9,37 @@ code {
 span.marginnote code, span.sidenote code {
 	font-size: 0.85rem;
 }
+
+/*
+** List items don't have margins above or below them, so if a code listing appears between two list
+** items, it will not be given enough space. We use the following rules to fix this.
+*/
+
+ul + pre.code { margin-top: 1.4rem; }
+ol + pre.code { margin-top: 1.4rem; }
+pre.code + ul { margin-top: 1.4rem; }
+pre.code + ol { margin-top: 1.4rem; }
+
+/*
+** If the first element after a section heading is a list, then there will be no space between the
+** heading and the first list item. This rules fixes this issue.
+*/
+
+h2 + ul, h2 + ol, h3 + ul, h3 + ol { margin-top: 1.4rem; }
+
+/*
+** Fixes formatting for paragraphs within list items.
+*/
+
+li > p {
+	line-height: inherit;
+	width: 100%;
+}
+
+/*
+** Indents nested lists.
+*/
+
+ul ul, ul ol, ol ul, ol ol {
+	margin-left: 5%;
+}

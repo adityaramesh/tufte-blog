@@ -43,7 +43,7 @@ args = ap.parse_args()
 assert args.target in build_targets
 
 if args.target == 'dev':
-	mathjax_url = 'output/js/MathJax/MathJax.js'
+	mathjax_url = 'js/MathJax/MathJax.js'
 else:
 	mathjax_url = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js'
 

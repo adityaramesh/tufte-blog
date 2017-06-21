@@ -122,21 +122,23 @@ section > ul, section > ol {
 *****************************************************/
 
 /*
-** Fixes to make blockquote sidenotes to line up with paragraph sidenotes.
+** Fixes to make the right text margins of blockquotes line up with those for paragraphs. I don't
+** know why the `+ 4px` term is necessary, but it makes the alignment exact on all of the browsers
+** that I tested.
 */
 
-/* The `-40px` term compensates for the blockquote indentation. */
-blockquote { width: calc(55% - 40px); }
-blockquote p, blockquote footer { width: 100%; }
+blockquote p { width: calc(55% + 4px); }
 
 @media (max-width: 760px) {
 	/* The `-1.5em` term compensates for the blockquote indentation. */
 	blockquote { width: calc(100% - 1.5em); }
+	blockquote p { width: 100%; }
 }
 
 /*
-** Makes sidenotes for blockquotes line up with those for paragraphs. I don't know why `4px` ended
-** up being the correct value to use here, but it makes the alignment exact.
+** Makes sidenotes for blockquotes line up with those for paragraphs. Again, I don't know why `4px`
+** ended up being the correct value to use here, but it makes the alignment exact on all of the
+** browsers that I tested.
 */
 
 blockquote .sidenote, blockquote .marginnote {

@@ -50,6 +50,7 @@ div.table-wrapper {
 section > ul > li:first-child { padding-top: 0; }
 section > ul > li:last-child { padding-bottom: 0; }
 
+section li > ul > li:first-child { padding-top: 1rem; }
 section li > ul > li:last-child { padding-bottom: 0; }
 
 /*

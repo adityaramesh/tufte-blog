@@ -127,7 +127,7 @@ section > ul, section > ol {
 
 /* The `-40px` term compensates for the blockquote indentation. */
 blockquote { width: calc(55% - 40px); }
-blockquote p { width: 100%; }
+blockquote p, blockquote footer { width: 100%; }
 
 @media (max-width: 760px) {
 	/* The `-1.5em` term compensates for the blockquote indentation. */

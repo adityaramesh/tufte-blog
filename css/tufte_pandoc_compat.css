@@ -41,7 +41,11 @@ div.table-wrapper {
 **
 **   1. The list item is the first child of the top-level list.
 **   2. The list item is the last child of the top-level list.
-**   3. The list item is the last child of a sublist. If we don't remove the padding in this case,
+**   3. The list item is the first child of a sublist. The parent list item can only have padding
+**      along the top and bottom of its box. Therefore, the only contribution to the total padding
+**      between the parent list item and its child is the padding above the first list item of the
+**      child. In these cases, we double the padding of the first list item of the child sublist.
+**   4. The list item is the last child of a sublist. If we don't remove the padding in this case,
 **      then the bottom paddings of all of the list items that are last children will accumulate.
 **      This will result in an excess of space between the leaf node of the current item of the
 **      top-level list, and its next sibling.
@@ -52,6 +56,12 @@ section > ul > li:last-child { padding-bottom: 0; }
 
 section li > ul > li:first-child { padding-top: 1rem; }
 section li > ul > li:last-child { padding-bottom: 0; }
+
+section > ol > li:first-child { padding-top: 0; }
+section > ol > li:last-child { padding-bottom: 0; }
+
+section li > ol > li:first-child { padding-top: 1rem; }
+section li > ol > li:last-child { padding-bottom: 0; }
 
 /*
 ** Lists don't have margins above or below them, so if a code listing appears between two lists, it

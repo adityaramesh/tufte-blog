@@ -1,45 +1,146 @@
-section.level1, section.level3, section.level4, section.level5, section.level6 {
-	padding: 0;
-}
-
-code {
-	font-size: 1.05rem;
-}
-
-span.marginnote code, span.sidenote code {
-	font-size: 0.85rem;
-}
-
 /*
-** List items don't have margins above or below them, so if a code listing appears between two list
-** items, it will not be given enough space. We use the following rules to fix this.
+** This CSS file contains tweaks and fixes to modify the default behavior defined by `tufte.css`.
 */
 
-ul + pre.code { margin-top: 1.4rem; }
-ol + pre.code { margin-top: 1.4rem; }
-pre.code + ul { margin-top: 1.4rem; }
-pre.code + ol { margin-top: 1.4rem; }
+/*
+** XXX: I forgot why we don't remove the padding from the second-level section tags.
+*/
+
+section.level1, section.level3, section.level4, section.level5, section.level6 { padding: 0; }
+
+/************************
+** Font size adjustments.
+************************/
+
+code { font-size: 1.05rem; }
+span.marginnote code, span.sidenote code { font-size: 0.85rem; }
+
+/*********************************
+** Fixes to formatting for tables.
+*********************************/
+
+/*
+** Undoes the effect of the rule for `div.table-wrapper` in `tufte.css`, and adds `text-align:
+** center`.
+*/
+
+div.table-wrapper {
+	text-align: center;
+	overflow-x: visible;
+	font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua",
+		Georgia, serif;
+}
+
+/********************************
+** Fixes to formatting for lists.
+********************************/
+
+/*
+** Normally, every list item has `0.5rem` padding along the top and bottom borders. There are two
+** cases where we need to remove this padding: 
+**
+**   1. The list item is the first child of the top-level list.
+**   2. The list item is the last child of the top-level list.
+**   3. The list item is the last child of a sublist. If we don't remove the padding in this case,
+**      then the bottom paddings of all of the list items that are last children will accumulate.
+**      This will result in an excess of space between the leaf node of the current item of the
+**      top-level list, and its next sibling.
+*/
+
+section > ul > li:first-child { padding-top: 0; }
+section > ul > li:last-child { padding-bottom: 0; }
+
+section li > ul > li:last-child { padding-bottom: 0; }
+
+/*
+** Lists don't have margins above or below them, so if a code listing appears between two lists, it
+** will not be given enough space. We use the following rules to fix this.
+*/
+
+ul + pre.code, pre.code + ul,
+ol + pre.code, pre.code + ol { margin-top: 1.4rem; }
 
 /*
 ** If the first element after a section heading is a list, then there will be no space between the
-** heading and the first list item. This rules fixes this issue.
+** heading and the first list item. This rules adds the appropriate amount of space.
 */
 
 h2 + ul, h2 + ol, h3 + ul, h3 + ol { margin-top: 1.4rem; }
 
 /*
-** Fixes formatting for paragraphs within list items.
+** Normalizes formatting for paragraphs within list items.
 */
 
 li > p {
-	line-height: inherit;
 	width: 100%;
+	margin: 0;
+	line-height: inherit;
 }
 
 /*
-** Indents nested lists.
+** By default, nested lists are not given extra indentation. This rule adds the necessary
+** indentation.
 */
 
-ul ul, ul ol, ol ul, ol ol {
-	margin-left: 5%;
+ul ul, ul ol, ol ul, ol ol { margin-left: 5%; }
+
+/*
+** The fact that sidenotes inherit the `list-style` of the lists in which they appear probably
+** doesn't cause any aesthetic differences, but we reset them anyway.
+*/
+
+ul .sidenote, ul .marginnote, ol .sidenote, ol .marginnote {
+	list-style-type: none;
+	margin-right: calc(-60% - 4px);
+}
+
+/*
+** Makes the effective text width for lists the same as for paragraphs.
+*/
+
+/*
+** I'm not sure why `tufte.css` used `-webkit-padding` for lists. This makes it so that lists are
+** only indented on webkit-based browsers.
+*/
+
+section > ul, section > ol {
+	width: 50%;
+	-webkit-padding-start: 0;
+	-webkit-padding-end: 0;
+	padding-left: 5%;
+}
+
+@media (max-width: 760px) {
+	section > ul, section > ol {
+		width: 95%;
+		-webkit-padding-end: 0;
+	}
+}
+
+/*****************************************************
+** Fixes to formatting for paragraphs and blockquotes.
+*****************************************************/
+
+/*
+** Fixes to make blockquote sidenotes to line up with paragraph sidenotes.
+*/
+
+/* The `-40px` term compensates for the blockquote indentation. */
+blockquote { width: calc(55% - 40px); }
+blockquote p { width: 100%; }
+
+@media (max-width: 760px) {
+	/* The `-1.5em` term compensates for the blockquote indentation. */
+	blockquote { width: calc(100% - 1.5em); }
+}
+
+/*
+** Makes sidenotes for blockquotes line up with those for paragraphs. I don't know why `4px` ended
+** up being the correct value to use here, but it makes the alignment exact.
+*/
+
+blockquote .sidenote, blockquote .marginnote {
+	width: 50%;
+	min-width: 0px;
+	margin-right: calc(-60% - 4px);
 }

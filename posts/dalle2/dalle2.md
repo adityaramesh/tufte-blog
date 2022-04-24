@@ -26,7 +26,7 @@ relative positions.
 
 [clip]: https://openai.com/blog/clip/
 [diffusion]: https://arxiv.org/abs/2006.11239
-[^clip_fig]: ![](/Users/aramesh/code/tufte-blog/output/posts/dalle2/images/clip.png) Illustration of the contrastive
+[^clip_fig]: ![](posts/dalle2/images/clip.png) Illustration of the contrastive
 training objective for CLIP.
 
 [^diffusion_fig][]{-} Diffusion is a technique to train a generative model for images by learning to undo the steps of a
@@ -37,7 +37,7 @@ information into the image that did not previously exist. To generate an image, 
 apply the model.  This gradually makes the image more and more realistic, with the end result being a pristene,
 noiseless image.
 
-[^diffusion_fig]: ![](/Users/aramesh/code/tufte-blog/output/posts/dalle2/images/diffusion.gif) Illustration of the
+[^diffusion_fig]: ![](posts/dalle2/images/diffusion.gif) Illustration of the
 process used to generate a new image with the diffusion model, created by coauthor [Alex Nichol.][alex]
 
 DALL·E 2 generates images in a two-stage process. In the first stage, a model which we call the prior generates the CLIP
@@ -84,7 +84,7 @@ reconstructs the original image) to 0.50 (which results in a modernized version 
 [alex]: https://aqnichol.com
 [casey]: http://caseychu.io
 [mark]: https://twitter.com/markchen90?lang=en
-[^house]: ![](/Users/aramesh/code/tufte-blog/output/posts/dalle2/images/house.gif) Animation of text diff used to
+[^house]: ![](posts/dalle2/images/house.gif) Animation of text diff used to
 transform a victorian house into a modern one.
 
 _Acknowledgments:_ Thanks to my coauthors [Prafulla Dhariwal][prafulla], [Alex Nichol][alex], [Casey Chu][casey], and

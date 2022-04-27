@@ -18,22 +18,22 @@ The system underlying DALL·E 2, which we call unCLIP, is based on two key techn
 language supervision". Diffusion is a technique to train a generative model for images by learning to undo the steps of
 a fixed corruption process. We briefly describe both of these technologies next.
 
-CLIP consists of two neural networks -- a text encoder and an image encoder -- that are trained on a large, diverse
-collection of image-text pairs.  Each encoder maps its input to a 1,024-dimensional _embedding_ in an abstract concept
-space that is shared between both modalities. During each step of training, CLIP receives 32,768 images and their
-corresponding captions. The encoders are trained to match the embedding of each image with the embedding of its
-corresponding caption.
+[^clip_fig][]{-} CLIP consists of two neural networks -- a text encoder and an image encoder -- that are trained on a
+large, diverse collection of image-text pairs.  Each encoder maps its input to a 1,024-dimensional _embedding_ in an
+abstract concept space that is shared between both modalities. During each step of training, CLIP receives 32,768 images
+and their corresponding captions. The encoders are trained to match the embedding of each image with the embedding of
+its corresponding caption.
 
-[^clip_fig][]{-} This simple training objective encourages CLIP to learn about all of the features of an image that
-people are likely to write about online. These features include things like which objects are present, the aesthetic
-style, the colors and materials that are used, and so on. By contrast, CLIP is typically _not_ incentivized to preserve
-information about the relative positions of objects, or information about which attributes apply to which objects. This
-means that CLIP would have a hard time distinguishing between, say, an image of a red cube on top of a blue cube and
-another image in which the positions of the two objects are swapped. The reason for this is the contrastive nature of
-the CLIP training objective: CLIP is only incentivized to learn the features of an image that are sufficient to match it
-up with the correct caption (out of the other 32,767 for the current training step). Unless it receives a counterexample
-(i.e., a caption that mentions a blue cube on top of a red cube), CLIP will not learn to preserve information about the
-objects' relative positions.
+This simple training objective encourages CLIP to learn about all of the features of an image that people are likely to
+write about online. These features include things like which objects are present, the aesthetic style, the colors and
+materials that are used, and so on. By contrast, CLIP is typically _not_ incentivized to preserve information about the
+relative positions of objects, or information about which attributes apply to which objects. This means that CLIP would
+have a hard time distinguishing between, say, an image of a red cube on top of a blue cube and another image in which
+the positions of the two objects are swapped. The reason for this is the contrastive nature of the CLIP training
+objective: CLIP is only incentivized to learn the features of an image that are sufficient to match it up with the
+correct caption (out of the other 32,767 for the current training step). Unless it receives a counterexample (i.e., a
+caption that mentions a blue cube on top of a red cube), CLIP will not learn to preserve information about the objects'
+relative positions.
 
 [clip]: https://openai.com/blog/clip/
 [diffusion]: https://arxiv.org/abs/2006.11239
